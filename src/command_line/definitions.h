@@ -5,8 +5,8 @@
 /////////////////////////////////
 
 
-#ifndef OPTIONS_DEFINITIONS_H_
-#define OPTIONS_DEFINITIONS_H_
+#ifndef COMMAND_LINE_DEFINITIONS_H_
+#define COMMAND_LINE_DEFINITIONS_H_
 
 constexpr char kCmdLineOptHelp[] = "help";
 constexpr char kCmdLineOptConfig[] = "config";
@@ -41,4 +41,4 @@ constexpr char kHelpPort[] = "\"port\"";
 constexpr char kHelpMaxNumConnections[] = "\"max number of connections\"";
 constexpr char kHelpRunAsService[] = "\"run as service\"";
 
-#endif  // OPTIONS_DEFINITIONS_H_
+#endif  // COMMAND_LINE_DEFINITIONS_H_
