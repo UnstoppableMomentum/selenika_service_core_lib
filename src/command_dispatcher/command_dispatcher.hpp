@@ -10,11 +10,21 @@
 #include <functional>
 #include <iostream>
 #include <map>
+#include <string>
 #include <tuple>
 #include <utility>
 
 
 namespace selenika::core::service {
+
+class CommandResult {
+ public:
+    CommandResult()
+        : returnCode(0)
+    {}
+    int returnCode;
+    std::string response;
+};
 
 template <typename TData, typename TParser, typename... Args>
 struct tuple_reader_sv {
@@ -30,33 +40,33 @@ struct tuple_reader_sv<TData, TParser, First, Rest...> {
     }
 };
 
-template <typename TData, typename TReturn>
+template <typename TData, typename TResult = CommandResult>
 class Dispatcher {
-    std::map<uint32_t, std::function<TReturn(TData)>> commandMap;
+    std::map<uint32_t, std::function<TResult(TData)>> commandMap;
 
  public:
     template <typename TParser, typename... Args>
-    void AddHandler(uint32_t command, TReturn (*func)(Args...)) {
+    void AddHandler(uint32_t command, TResult (*func)(Args...)) {
         commandMap.emplace(command, [func](TData data) {
                                TParser parser(data);
-                               TReturn res;
+                               TResult res;
                                if (parser.Validate()) {
                                    auto args = tuple_reader_sv<TData, TParser, Args...>::read(data, std::move(parser));
                                    res = std::apply(func, std::move(args));
                                } else {
-                                   std::cout << " invalid data:"  << std::endl;
+                                   res.response = "invalid data";
                                }
                                 return res;
                            });
     }
 
-    TReturn DispatchCommand(uint32_t command, TData data) {
+    TResult DispatchCommand(uint32_t command, TData data) {
         auto it = commandMap.find(command);
-        TReturn res;
+        TResult res;
         if (it != commandMap.end()) {
             res = it->second(data);
         } else {
-            std::cout << "command :" << command << " was not registered" << std::endl;
+            res.response = "command was not registered";
         }
         return res;
     }

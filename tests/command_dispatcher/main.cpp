@@ -26,6 +26,7 @@ class CommandOneParser {
         return std::make_tuple(param0, param1);
     }
 };
+
 class CommandTwoParser {
     std::string commandString_;
  public:
@@ -45,24 +46,27 @@ class CommandTwoParser {
     }
 };
 
-
-int CommandOneHandler(int param0, std::string param1) {
+selenika::core::service::CommandResult CommandOneHandler(int param0, std::string param1) {
     std::cout << __FUNCTION__
         << " param0:" << param0
         << " param1:" << param1
         << " ... DO SOME WORK"
         << std::endl;
-    return 111;
+    selenika::core::service::CommandResult res;
+    res.returnCode = 123;
+    return res;
 }
 
-int CommandTwoHandler(int param0, std::string param1, bool param2) {
+selenika::core::service::CommandResult CommandTwoHandler(int param0, std::string param1, bool param2) {
     std::cout << __FUNCTION__
         << " param0:" << param0
         << " param1:" << param1
         << " param2:" << param2
         << " ... DO SOME WORK"
         << std::endl;
-    return 222;
+    selenika::core::service::CommandResult res;
+    res.returnCode = 3456;
+    return res;
 }
 
 
@@ -70,13 +74,15 @@ int main(int argc, char *argv[]) {
     const int commandOneId = 12345;
     const int commandTwoId = 67890;
 
-    selenika::core::service::Dispatcher<std::string, int> commandDispatcher;
+    selenika::core::service::Dispatcher<std::string> commandDispatcher;
     commandDispatcher.AddHandler<CommandOneParser>(commandOneId, CommandOneHandler);
     commandDispatcher.AddHandler<CommandTwoParser>(commandTwoId, CommandTwoHandler);
 
-    auto commandOneReslut = commandDispatcher.DispatchCommand(commandOneId , "param1 param2 anything ...");
+    selenika::core::service::CommandResult dispatchResult  = commandDispatcher.DispatchCommand(commandOneId , "param1 param2 anything ...");
+
     auto commandTwoReslut = commandDispatcher.DispatchCommand(commandTwoId , "param1 param2 anything ...");
-    std::cout << " command one result: " << commandOneReslut << std::endl;
-    std::cout << " command two result: " << commandTwoReslut << std::endl;
+   
+    std::cout << " command one result: " << dispatchResult.returnCode << std::endl;
+    std::cout << " command two result: " << commandTwoReslut.returnCode << std::endl;
     return 0;
 }
