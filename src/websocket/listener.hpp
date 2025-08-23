@@ -41,7 +41,7 @@ class listener : public boost::enable_shared_from_this<listener> {
  public:
     listener(
         std::string host,
-        std::uint16_t port,
+        uint16_t port,
         net::io_context& ioc,
         ssl::context& ctx,
         boost::shared_ptr<ICommandDispatcher> commandDispatcher);

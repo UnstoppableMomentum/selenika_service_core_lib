@@ -20,6 +20,6 @@ MessageProcessingData::MessageProcessingData(std::string_view message, websocket
   boost::property_tree::read_json(ss, pt_);
 }
 
-std::string MessageProcessingData::getCommand() const {
-    return pt_.get<std::string>("cmd", "");
+uint32_t MessageProcessingData::getCommand() const {
+    return pt_.get<uint32_t>("cmd", -1);
 }

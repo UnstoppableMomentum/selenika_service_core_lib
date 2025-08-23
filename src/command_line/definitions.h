@@ -5,8 +5,8 @@
 /////////////////////////////////
 
 
-#ifndef COMMAND_LINE_DEFINITIONS_H_
-#define COMMAND_LINE_DEFINITIONS_H_
+#ifndef OPTIONS_DEFINITIONS_H_
+#define OPTIONS_DEFINITIONS_H_
 
 constexpr char kCmdLineOptHelp[] = "help";
 constexpr char kCmdLineOptConfig[] = "config";
@@ -25,8 +25,8 @@ constexpr char kDefaultDbgLevel[] = "info";
 constexpr char kDefaultLog[] = "/tmp/selenika_peer_server.log";
 constexpr char kDefaultPathSslSrt[] = "server.crt";
 constexpr char kDefaultPathSslKey[] = "server.key";
-constexpr std::uint16_t kDefaultPort = 8080;
-constexpr std::uint32_t kDefaultMaxNumConnections = 1024;
+constexpr uint16_t kDefaultPort = 8080;
+constexpr uint32_t kDefaultMaxNumConnections = 1024;
 constexpr bool kDefaultRunAsService = false;
 
 constexpr char kHelpHeader[] = "Command line options:";
@@ -41,4 +41,4 @@ constexpr char kHelpPort[] = "\"port\"";
 constexpr char kHelpMaxNumConnections[] = "\"max number of connections\"";
 constexpr char kHelpRunAsService[] = "\"run as service\"";
 
-#endif  // COMMAND_LINE_DEFINITIONS_H_
+#endif  // OPTIONS_DEFINITIONS_H_

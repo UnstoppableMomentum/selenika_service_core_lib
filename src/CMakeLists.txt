@@ -5,8 +5,11 @@
 ###############################
 
 cmake_minimum_required(VERSION 3.10)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(BIN_NAME selenika_service_core)
 
 add_definitions(-DDEBUG)
@@ -21,7 +24,6 @@ find_package(OpenSSL)
 find_package(Threads REQUIRED)
 
 add_library(${BIN_NAME} SHARED
-    command_dispatcher/command_dispatcher_base.cpp
     command_line/cmd_line_options.cpp
     config/logging.cpp
     messaging/message_processing_data.cpp

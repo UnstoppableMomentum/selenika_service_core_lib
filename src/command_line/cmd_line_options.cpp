@@ -4,6 +4,7 @@
 //                             //
 /////////////////////////////////
 
+#include <cstdint>
 #include <iostream>
 
 #include <boost/program_options.hpp>
@@ -52,8 +53,8 @@ void CommandLineOptions::Init(int ac, char *av[]) {
   (kCmdLineLog, po::value<std::string>(), kHelpLog)
   (kCmdLineOptSslSrt, po::value<std::string>(), kHelpPathSslSrt)
   (kCmdLineOptSslKey, po::value<std::string>(), kHelpPathSslKey)
-  (kCmdLineOptPort, po::value<std::uint16_t>(), kHelpPort)
-  (kCmdLineMaxNumConnections, po::value<std::uint32_t>(), kHelpMaxNumConnections)
+  (kCmdLineOptPort, po::value<uint16_t>(), kHelpPort)
+  (kCmdLineMaxNumConnections, po::value<uint32_t>(), kHelpMaxNumConnections)
   (kCmdLineRunAsService, po::value<bool>(), kHelpRunAsService);
 
   po::variables_map vm;
@@ -82,10 +83,10 @@ void CommandLineOptions::Init(int ac, char *av[]) {
       m_sPathSslKey = vm[kCmdLineOptSslKey].as<std::string>();
 
     if (vm.count(kCmdLineOptPort))
-      m_iPort = vm[kCmdLineOptPort].as<std::uint16_t>();
+      m_iPort = vm[kCmdLineOptPort].as<uint16_t>();
 
     if (vm.count(kCmdLineMaxNumConnections))
-      m_iMaxNumConnections = vm[kCmdLineMaxNumConnections].as<std::uint32_t>();
+      m_iMaxNumConnections = vm[kCmdLineMaxNumConnections].as<uint32_t>();
 
     if (vm.count(kCmdLineRunAsService))
       m_runAsService = vm[kCmdLineRunAsService].as<bool>();

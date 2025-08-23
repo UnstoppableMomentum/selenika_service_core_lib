@@ -8,6 +8,7 @@
 #define COMMAND_PROCESSOR_COMMAND_DISPATCHER_H_
 
 #include <string>
+#include <string_view>
 
 #include "messaging/message_processing_data.h"
 

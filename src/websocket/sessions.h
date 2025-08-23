@@ -7,9 +7,10 @@
 #ifndef SHARED_STATE_SESSIONS_H_
 #define SHARED_STATE_SESSIONS_H_
 
-#include <mutex>
+#include <cstdint>
 #include <string>
 #include <string_view>
+#include <mutex>
 #include <unordered_set>
 
 // Forward declaration
@@ -21,7 +22,7 @@ using TSessionsConstItr = TSessions::const_iterator;
 // Represents the shared server state
 // Keep a list of all the connected clients
 class Sessions {
-    const std::uint32_t max_num_connections_;
+    const uint32_t max_num_connections_;
     // This mutex synchronizes all access to sessions_
     std::mutex mutex_;
 
@@ -29,7 +30,7 @@ class Sessions {
 
  public:
     // TODO
-    explicit Sessions(std::uint32_t max_num_connections = 10);
+    explicit Sessions(uint32_t max_num_connections = 10);
     ~Sessions();
     bool insert(websocket_session *session);
     void remove(websocket_session *session);

@@ -12,6 +12,15 @@ enum class EResult {
     ERROR = 1
 };
 
+enum class EMessageId {
+    UNKNOWN      = -1,
+    NOP          =  0,
+    SIGN_IN      =  1,
+    SIGN_OUT     =  2,
+    SEND_MESSAGE =  3,
+    MAX          =  4
+};
+
 enum class EError {
     invalidRequest = 0,
     internalError  = 1,

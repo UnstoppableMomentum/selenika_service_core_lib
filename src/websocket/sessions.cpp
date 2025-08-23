@@ -12,7 +12,7 @@
 
 #include "sessions.h"
 
-Sessions::Sessions(std::uint32_t max_num_connections)
+Sessions::Sessions(uint32_t max_num_connections)
     : max_num_connections_(max_num_connections) {
     SLNK_LOG_DEBUG() << " max_num_connections:" << max_num_connections_;
 }

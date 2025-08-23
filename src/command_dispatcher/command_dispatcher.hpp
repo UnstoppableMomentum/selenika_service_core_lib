@@ -10,6 +10,7 @@
 #include <functional>
 #include <iostream>
 #include <map>
+#include <stdint.h>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -40,14 +41,13 @@ struct tuple_reader_sv<TData, TParser, First, Rest...> {
     }
 };
 
-template <typename TData, typename TResult = CommandResult, typename TCommand = uint32_t>
+template <typename TData, typename TResult = CommandResult>
 class Dispatcher {
-
-    std::map<TCommand, std::function<TResult(TData)>> commandMap;
+    std::map<uint32_t, std::function<TResult(TData)>> commandMap;
 
  public:
     template <typename TParser, typename... Args>
-    void AddHandler(TCommand command, TResult (*func)(Args...)) {
+    void AddHandler(uint32_t command, TResult (*func)(Args...)) {
         commandMap.emplace(command, [func](TData data) {
                                TParser parser(data);
                                TResult res;
@@ -61,7 +61,7 @@ class Dispatcher {
                            });
     }
 
-    TResult DispatchCommand(TCommand command, TData data) {
+    TResult DispatchCommand(uint32_t command, TData data) {
         auto it = commandMap.find(command);
         TResult res;
         if (it != commandMap.end()) {
