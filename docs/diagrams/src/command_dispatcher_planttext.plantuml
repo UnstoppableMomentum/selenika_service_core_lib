@@ -1,0 +1,50 @@
+@startuml
+
+namespace selenika.core.service {
+  class CommandResult {
+    + CommandResult()
+    + returnCode: int
+    + response: std::string
+  }
+
+  class Dispatcher<TData, TResult, TCommand> {
+    -commandMap: std::map<TCommand, std::function<TResult(TData)>>
+    +AddHandler<TParser, Args...>(command: TCommand, func: TResult (*)(Args...))
+    +DispatchCommand(command: TCommand, data: TData): TResult
+  }
+
+  class tuple_reader_sv<TData, TParser, Args...> {
+    + {static} read(packet: TData, parser: TParser&&): std::tuple<>
+  }
+
+  class tuple_reader_sv<TData, TParser, First, Rest...> {
+    + {static} read(packet: TData, parser: TParser&&): std::tuple<First, Rest...>
+  }
+}
+
+' Template specialization relationships
+Dispatcher .down.> tuple_reader_sv : uses
+
+
+' Dependency relationships
+Dispatcher --> CommandResult : returns
+
+note right of Dispatcher::AddHandler
+  Creates lambda that:
+  1. Creates TParser with data
+  2. Validates with parser.Validate()
+  3. Parses arguments with tuple_reader_sv
+  4. Calls function with parsed args
+end note
+
+note bottom of tuple_reader_sv
+  Template metaprogramming structure
+  for parsing tuple arguments
+end note
+
+note bottom of tuple_reader_sv
+  Explicit specialization:
+  tuple_reader_sv<TData, TParser, First, Rest...>
+end note
+
+@enduml

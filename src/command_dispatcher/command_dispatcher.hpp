@@ -1,6 +1,6 @@
 /////////////////////////////////
 //                             //
-// Copyright (c) 2022 Selenika //
+// Copyright (c) 2025 Selenika //
 //                             //
 /////////////////////////////////
 
@@ -15,40 +15,49 @@
 #include <tuple>
 #include <utility>
 
+namespace selenika::core::service
+{
 
-namespace selenika::core::service {
+    class CommandResult
+    {
+    public:
+        CommandResult()
+            : returnCode(0)
+        {
+        }
+        int returnCode;
+        std::string response;
+    };
 
-class CommandResult {
- public:
-    CommandResult()
-        : returnCode(0)
-    {}
-    int returnCode;
-    std::string response;
-};
+    template <typename TData, typename TParser, typename... Args>
+    struct tuple_reader_sv
+    {
+        static std::tuple<> read(TData, TParser &&)
+        {
+            return {};
+        }
+    };
 
-template <typename TData, typename TParser, typename... Args>
-struct tuple_reader_sv {
-    static std::tuple<> read(TData, TParser&&) {
-        return {};
-    }
-};
+    template <typename TData, typename TParser, typename First, typename... Rest>
+    struct tuple_reader_sv<TData, TParser, First, Rest...>
+    {
+        static std::tuple<First, Rest...> read(TData packet, TParser &&parser)
+        {
+            return parser.Parse(packet);
+        }
+    };
 
-template <typename TData, typename TParser, typename First, typename... Rest>
-struct tuple_reader_sv<TData, TParser, First, Rest...> {
-    static std::tuple<First, Rest...> read(TData packet, TParser &&parser) {
-        return parser.Parse(packet);
-    }
-};
+    template <typename TData, typename TResult = CommandResult, typename TCommand = uint32_t>
+    class Dispatcher
+    {
+        std::map<TCommand, std::function<TResult(TData)>> commandMap;
 
-template <typename TData, typename TResult = CommandResult, typename TCommand = uint32_t>
-class Dispatcher {
-    std::map<TCommand, std::function<TResult(TData)>> commandMap;
-
- public:
-    template <typename TParser, typename... Args>
-    void AddHandler(TCommand command, TResult (*func)(Args...)) {
-        commandMap.emplace(command, [func](TData data) {
+    public:
+        template <typename TParser, typename... Args>
+        void AddHandler(TCommand command, TResult (*func)(Args...))
+        {
+            commandMap.emplace(command, [func](TData data)
+                               {
                                TParser parser(data);
                                TResult res;
                                if (parser.Validate()) {
@@ -57,22 +66,25 @@ class Dispatcher {
                                } else {
                                    res.response = "invalid data";
                                }
-                                return res;
-                           });
-    }
-
-    TResult DispatchCommand(TCommand command, TData data) {
-        auto it = commandMap.find(command);
-        TResult res;
-        if (it != commandMap.end()) {
-            res = it->second(data);
-        } else {
-            res.response = "command was not registered";
+                                return res; });
         }
-        return res;
-    }
-};
 
-}  // namespace selenika::core::service
+        TResult DispatchCommand(TCommand command, TData data)
+        {
+            auto it = commandMap.find(command);
+            TResult res;
+            if (it != commandMap.end())
+            {
+                res = it->second(data);
+            }
+            else
+            {
+                res.response = "command was not registered";
+            }
+            return res;
+        }
+    };
 
-#endif  // SRC_COMMAND_DISPATCHER_COMMAND_DISPATCHER_HPP_
+} // namespace selenika::core::service
+
+#endif // SRC_COMMAND_DISPATCHER_COMMAND_DISPATCHER_HPP_

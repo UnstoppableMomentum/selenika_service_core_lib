@@ -12,7 +12,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(command-dispatcher-test)
 
 include_directories(${CMAKE_SOURCE_DIR})
-include_directories(options)
 
 # add the executable
 add_executable(command-dispatcher-test
