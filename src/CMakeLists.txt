@@ -25,6 +25,7 @@ find_package(Threads REQUIRED)
 
 add_library(${BIN_NAME} SHARED
     command_line/cmd_line_options.cpp
+    command_dispatcher/impl/command_dispatcher_base.cpp
     config/logging.cpp
     messaging/message_processing_data.cpp
     messaging/response.cpp

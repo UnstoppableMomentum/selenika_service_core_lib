@@ -4,8 +4,8 @@
 //                             //
 /////////////////////////////////
 
-#ifndef SRC_COMMAND_DISPATCHER_COMMAND_DISPATCHER_HPP_
-#define SRC_COMMAND_DISPATCHER_COMMAND_DISPATCHER_HPP_
+#ifndef SLNK_00c1dc8d_6454_4f8b_b6ba_bbec703cd574
+#define SLNK_00c1dc8d_6454_4f8b_b6ba_bbec703cd574
 
 #include <functional>
 #include <iostream>
@@ -87,4 +87,4 @@ namespace selenika::core::service
 
 } // namespace selenika::core::service
 
-#endif // SRC_COMMAND_DISPATCHER_COMMAND_DISPATCHER_HPP_
+#endif // SLNK_00c1dc8d_6454_4f8b_b6ba_bbec703cd574
